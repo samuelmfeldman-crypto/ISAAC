@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ISAAC — Inphinity Sports Automated Advisory Companion</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif;background:#000;color:#f5f5f7;-webkit-font-smoothing:antialiased;min-height:100vh}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#111}
+::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+.hidden{display:none!important}
+.page{min-height:100vh}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bounce{0%,80%,100%{transform:scale(.5);opacity:.3}40%{transform:scale(1);opacity:1}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+.fade-up{animation:fadeUp .6s cubic-bezier(.22,1,.36,1) forwards}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:52px;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 24px}
+.nav-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none}
+.nav-logo-mark{width:26px;height:26px;background:linear-gradient(135deg,#fff,#a0a0a0);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#000;letter-spacing:0}
+.nav-logo-text{font-size:17px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-link{font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;transition:.2s;background:none;border:none}
+.nav-link:hover{color:#fff}
+.nav-cta{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:13px;font-weight:500;padding:6px 16px;border-radius:20px;cursor:pointer;transition:.2s}
+.nav-cta:hover{background:rgba(255,255,255,.2)}
+
+/* LANDING */
+#landing{background:#000}
+
+/* Hero */
+.hero{padding:130px 24px 100px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(255,255,255,.04) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-size:13px;font-weight:500;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px}
+.hero-title{font-size:clamp(52px,9vw,96px);font-weight:800;letter-spacing:-3px;line-height:.95;color:#fff;margin-bottom:24px}
+.hero-title .highlight{background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,.5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(17px,2.5vw,22px);color:rgba(255,255,255,.55);max-width:600px;margin:0 auto 48px;line-height:1.55;font-weight:400}
+.hero-acronym{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 24px;margin-bottom:48px}
+.hero-acronym span{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.1em;font-weight:500}
+.hero-acronym strong{color:rgba(255,255,255,.85);font-weight:600}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-hero-primary{background:#fff;color:#000;font-size:17px;font-weight:600;padding:16px 36px;border-radius:980px;border:none;cursor:pointer;transition:.3s;letter-spacing:-.2px}
+.btn-hero-primary:hover{background:rgba(255,255,255,.9);transform:scale(1.02)}
+.btn-hero-secondary{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:17px;font-weight:500;padding:16px 36px;border-radius:980px;cursor:pointer;transition:.3s}
+.btn-hero-secondary:hover{background:rgba(255,255,255,.14)}
+.hero-scroll-hint{margin-top:64px;color:rgba(255,255,255,.2);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+
+/* Divider */
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);margin:0 auto;max-width:800px}
+
+/* Stats */
+.stats{padding:80px 24px;background:rgba(255,255,255,.02)}
+.stats-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.stat{background:#000;padding:36px 24px;text-align:center}
+.stat-num{font-size:clamp(32px,5vw,48px);font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;margin-bottom:8px}
+.stat-lbl{font-size:12px;color:rgba(255,255,255,.35);line-height:1.4;font-weight:400;letter-spacing:.01em}
+
+/* Feature row */
+.feature{padding:100px 24px}
+.feature-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.feature-inner.reverse{direction:rtl}
+.feature-inner.reverse>*{direction:ltr}
+.feature-copy .eyebrow{font-size:12px;font-weight:600;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.feature-copy h2{font-size:clamp(32px,4vw,52px);font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1.05;margin-bottom:20px}
+.feature-copy p{font-size:17px;color:rgba(255,255,255,.5);line-height:1.65;margin-bottom:28px;font-weight:400}
+.feature-copy ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.feature-copy li{font-size:15px;color:rgba(255,255,255,.55);padding-left:20px;position:relative;line-height:1.5}
+.feature-copy li::before{content:'—';position:absolute;left:0;color:rgba(255,255,255,.25)}
+.feature-visual{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:28px;min-height:360px;display:flex;flex-direction:column;justify-content:center}
+
+/* Chat preview */
+.preview-header{display:flex;align-items:center;gap:10px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:18px}
+.isaac-mark{width:34px;height:34px;background:linear-gradient(135deg,#fff,#888);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#000;flex-shrink:0}
+.preview-name{font-weight:600;font-size:14px;color:#fff}
+.preview-status{font-size:11px;color:#30d158;display:flex;align-items:center;gap:4px}
+.status-dot{width:5px;height:5px;background:#30d158;border-radius:50%}
+.preview-msg{padding:11px 15px;border-radius:16px;font-size:13px;line-height:1.55;margin-bottom:10px;max-width:88%}
+.preview-msg.isaac{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);border-bottom-left-radius:4px}
+.preview-msg.user{background:#fff;color:#000;font-weight:500;border-bottom-right-radius:4px;margin-left:auto}
+
+/* Section */
+.section{padding:100px 24px;border-top:1px solid rgba(255,255,255,.06)}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-head{text-align:center;margin-bottom:64px}
+.section-head .eyebrow{font-size:12px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.section-head h2{font-size:clamp(36px,5vw,56px);font-weight:800;color:#fff;letter-spacing:-2px;line-height:1.05}
+.section-head p{font-size:17px;color:rgba(255,255,255,.4);margin-top:14px;max-width:500px;margin-left:auto;margin-right:auto}
+
+/* Steps */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.step{background:#000;padding:40px 32px}
+.step-n{font-size:13px;font-weight:600;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.step h3{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:12px}
+.step p{font-size:15px;color:rgba(255,255,255,.4);line-height:1.6}
+
+/* CTA strip */
+.cta-strip{padding:120px 24px;text-align:center;border-top:1px solid rgba(255,255,255,.06)}
+.cta-strip h2{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-2.5px;color:#fff;line-height:1;margin-bottom:20px}
+.cta-strip p{font-size:19px;color:rgba(255,255,255,.4);margin-bottom:40px;font-weight:400}
+
+/* Footer */
+footer{border-top:1px solid rgba(255,255,255,.07);padding:32px 24px}
+footer p{font-size:12px;color:rgba(255,255,255,.2);text-align:center;max-width:680px;margin:0 auto;line-height:1.7}
+
+/* ===== PROFILE PAGE ===== */
+#profile-page{background:#000;padding:80px 24px 60px}
+.profile-wrap{max-width:540px;margin:0 auto}
+.profile-header{margin-bottom:36px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.4);background:none;border:none;cursor:pointer;margin-bottom:24px;transition:.2s}
+.back-btn:hover{color:#fff}
+.profile-header h1{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.8px;margin-bottom:6px}
+.profile-header p{font-size:14px;color:rgba(255,255,255,.35)}
+
+/* Progress */
+.prog-track{display:flex;gap:6px;margin-top:24px}
+.prog-seg{flex:1;height:2px;background:rgba(255,255,255,.1);border-radius:1px;transition:.4s}
+.prog-seg.on{background:#fff}
+.prog-labels{display:flex;gap:6px;margin-top:8px}
+.prog-label{flex:1;font-size:10px;font-weight:500;color:rgba(255,255,255,.2);letter-spacing:.05em;text-transform:uppercase;transition:.2s}
+.prog-label.on{color:rgba(255,255,255,.6)}
+
+/* Form card */
+.form-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:32px;animation:fadeUp .5s cubic-bezier(.22,1,.36,1) forwards}
+.form-card h2{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.4px;margin-bottom:28px}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.field .hint{font-size:11px;color:rgba(255,255,255,.25);margin-bottom:8px;font-style:italic;text-transform:none;letter-spacing:0}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 16px;color:#fff;font-size:15px;font-family:inherit;outline:none;transition:.2s;appearance:none;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.07)}
+.field input::placeholder{color:rgba(255,255,255,.2)}
+.field select option{background:#111;color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* Star selector */
+.star-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.star-opt{padding:10px 4px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(255,255,255,.4);font-size:13px;font-weight:600;cursor:pointer;transition:.2s;text-align:center}
+.star-opt:hover{border-color:rgba(255,255,255,.25);color:#fff}
+.star-opt.on{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.1);color:#fff}
+.star-desc{margin-top:10px;padding:11px 14px;background:rgba(255,255,255,.03);border-radius:10px;font-size:12px;color:rgba(255,255,255,.4);line-height:1.55;border:1px solid rgba(255,255,255,.06)}
+
+/* Toggle buttons */
+.toggle-group{display:flex;gap:8px;flex-wrap:wrap}
+.toggle-opt{padding:9px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(255,255,255,.45);font-size:13px;font-weight:500;cursor:pointer;transition:.2s}
+.toggle-opt:hover{border-color:rgba(255,255,255,.25);color:#fff}
+.toggle-opt.on{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.1);color:#fff}
+
+/* Social blocks */
+.social-platform{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px;margin-bottom:14px}
+.social-platform-title{font-size:13px;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.platform-dot{width:6px;height:6px;border-radius:50%}
+.ig-dot{background:linear-gradient(135deg,#833ab4,#fd1d1d)}
+.tt-dot{background:#fff}
+.tw-dot{background:#1d9bf0}
+.yt-dot{background:#ff0000}
+
+.isaac-tip{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;margin-top:16px}
+.isaac-tip p{font-size:12px;color:rgba(255,255,255,.35);line-height:1.6}
+.isaac-tip strong{color:rgba(255,255,255,.55)}
+
+/* Form nav */
+.form-nav{display:flex;gap:10px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.07)}
+.btn-back{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);font-size:15px;font-weight:500;padding:14px 24px;border-radius:12px;cursor:pointer;transition:.2s}
+.btn-back:hover{background:rgba(255,255,255,.1);color:#fff}
+.btn-next{flex:1;background:#fff;color:#000;font-size:15px;font-weight:600;padding:14px;border-radius:12px;border:none;cursor:pointer;transition:.2s;letter-spacing:-.2px}
+.btn-next:hover{background:rgba(255,255,255,.9)}
+.btn-next:disabled{opacity:.3;cursor:not-allowed}
+.spinner{width:15px;height:15px;border:2px solid #000;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;display:inline-block;margin-right:8px;vertical-align:middle}
+
+/* ===== VALUATION ===== */
+#valuation-page{background:#000;padding:80px 24px 80px}
+.val-wrap{max-width:760px;margin:0 auto}
+.val-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.val-chat-btn{background:#fff;color:#000;font-size:13px;font-weight:600;padding:9px 20px;border-radius:20px;border:none;cursor:pointer;transition:.2s;letter-spacing:-.2px}
+.val-chat-btn:hover{background:rgba(255,255,255,.9)}
+
+/* Hero card */
+.val-hero{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:40px;margin-bottom:20px;animation:fadeUp .6s cubic-bezier(.22,1,.36,1) forwards}
+.val-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;flex-wrap:wrap;gap:16px}
+.val-eyebrow{font-size:12px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.val-number{font-size:clamp(52px,10vw,80px);font-weight:800;color:#fff;letter-spacing:-3px;line-height:1}
+.val-range{font-size:13px;color:rgba(255,255,255,.3);margin-top:8px;font-weight:400}
+.tier-pill{padding:8px 18px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:1px solid;align-self:flex-start;margin-top:8px}
+.tier-superstar{background:rgba(255,214,0,.1);color:#ffd60a;border-color:rgba(255,214,0,.25)}
+.tier-elite{background:rgba(191,148,228,.1);color:#bf94e4;border-color:rgba(191,148,228,.25)}
+.tier-established{background:rgba(100,210,255,.1);color:#64d2ff;border-color:rgba(100,210,255,.25)}
+.tier-rising{background:rgba(48,209,88,.1);color:#30d158;border-color:rgba(48,209,88,.25)}
+.tier-emerging{background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.1)}
+
+/* ISAAC summary */
+.isaac-summary{display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.03);border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,.06)}
+.isaac-summary .isaac-mark{flex-shrink:0}
+.summary-name{font-size:11px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.summary-text{font-size:15px;color:rgba(255,255,255,.75);line-height:1.6;font-weight:400}
+
+/* Cards */
+.val-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:28px;margin-bottom:16px}
+.val-card h2{font-size:17px;font-weight:700;color:#fff;letter-spacing:-.3px;margin-bottom:4px}
+.val-card .card-sub{font-size:13px;color:rgba(255,255,255,.3);margin-bottom:24px}
+
+/* Score rows */
+.score-r{margin-bottom:20px}
+.score-r:last-child{margin-bottom:0}
+.score-info{display:flex;justify-content:space-between;margin-bottom:8px}
+.score-info span:first-child{font-size:14px;color:rgba(255,255,255,.5)}
+.score-info span:last-child{font-size:14px;font-weight:600;color:#fff}
+.score-track{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.score-fill{height:100%;border-radius:2px;background:#fff;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+
+/* Deals grid */
+.deals-g{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.deal-c{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px;transition:.2s}
+.deal-c:hover{border-color:rgba(255,255,255,.15)}
+.deal-c .dl{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:6px;font-weight:500;letter-spacing:.03em}
+.deal-c .dv{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.4px}
+.deal-c .ds{font-size:11px;color:rgba(255,255,255,.2);margin-top:2px}
+
+/* Insights */
+.insights-g{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ins-c{border-radius:16px;padding:20px;border:1px solid}
+.ins-c.str{background:rgba(48,209,88,.04);border-color:rgba(48,209,88,.15)}
+.ins-c.weak{background:rgba(255,69,58,.04);border-color:rgba(255,69,58,.15)}
+.ins-c.opp{background:rgba(255,214,0,.04);border-color:rgba(255,214,0,.15)}
+.ins-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.ins-c.str .ins-label{color:#30d158}
+.ins-c.weak .ins-label{color:#ff453a}
+.ins-c.opp .ins-label{color:#ffd60a}
+.ins-item{display:flex;gap:7px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:8px}
+.ins-icon{flex-shrink:0;font-size:10px;margin-top:1px}
+
+/* Val CTA */
+.val-cta{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:40px;text-align:center;margin-top:8px}
+.val-cta .isaac-mark{margin:0 auto 18px;width:44px;height:44px;border-radius:12px;font-size:15px}
+.val-cta h3{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:10px}
+.val-cta p{font-size:14px;color:rgba(255,255,255,.35);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+.disclaimer{font-size:11px;color:rgba(255,255,255,.15);text-align:center;margin-top:28px;line-height:1.8}
+
+/* ===== CHAT ===== */
+#chat-page{background:#000;display:flex;flex-direction:column;height:100vh}
+.chat-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:52px;background:rgba(0,0,0,.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 24px}
+.chat-nav-inner{max-width:720px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.chat-nav-left{display:flex;align-items:center;gap:10px}
+.chat-agent-info .aname{font-size:14px;font-weight:600;color:#fff}
+.chat-agent-info .astatus{font-size:11px;color:#30d158;display:flex;align-items:center;gap:4px}
+.chat-nav-right{display:flex;gap:8px}
+.chat-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;cursor:pointer;transition:.2s}
+.chat-pill:hover{background:rgba(255,255,255,.14);color:#fff}
+
+.messages{flex:1;overflow-y:auto;padding:70px 24px 110px;max-width:720px;margin:0 auto;width:100%}
+.starters-wrap{margin-bottom:24px}
+.starters-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.starters-row{display:flex;flex-wrap:wrap;gap:8px}
+.starter{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.55);font-size:13px;padding:8px 14px;border-radius:20px;cursor:pointer;transition:.2s;font-family:inherit}
+.starter:hover{background:rgba(255,255,255,.09);color:#fff;border-color:rgba(255,255,255,.2)}
+
+.msg{display:flex;gap:10px;margin-bottom:18px;animation:fadeUp .3s cubic-bezier(.22,1,.36,1) forwards}
+.msg.user{flex-direction:row-reverse}
+.msg .isaac-mark{flex-shrink:0;margin-top:2px;width:30px;height:30px;font-size:11px;border-radius:8px}
+.bubble-wrap{max-width:80%}
+.msg-sender{font-size:10px;font-weight:600;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.msg-bub{padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.65;white-space:pre-wrap;font-weight:400}
+.msg.assistant .msg-bub{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);border-bottom-left-radius:4px}
+.msg.user .msg-bub{background:#fff;color:#000;font-weight:500;border-bottom-right-radius:4px}
+.msg.user .bubble-wrap{display:flex;flex-direction:column;align-items:flex-end}
+
+/* Freemium gate */
+.msg-gate{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:center;margin:16px 0;animation:fadeUp .4s ease forwards}
+.msg-gate h4{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px;margin-bottom:6px}
+.msg-gate p{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:16px;line-height:1.55}
+.gate-btn{background:#fff;color:#000;font-size:14px;font-weight:600;padding:10px 24px;border-radius:20px;border:none;cursor:pointer;transition:.2s;margin:4px}
+.gate-btn:hover{background:rgba(255,255,255,.9)}
+.gate-btn-sec{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:14px;font-weight:500;padding:10px 24px;border-radius:20px;cursor:pointer;transition:.2s;margin:4px}
+
+.typing-row{display:flex;gap:10px;align-items:center}
+.typing-dots{display:flex;gap:4px;padding:12px 16px;background:rgba(255,255,255,.07);border-radius:18px;border-bottom-left-radius:4px}
+.tdot{width:6px;height:6px;background:rgba(255,255,255,.4);border-radius:50%;animation:bounce 1.4s infinite}
+.tdot:nth-child(2){animation-delay:.2s}
+.tdot:nth-child(3){animation-delay:.4s}
+
+.chat-input-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.08);padding:12px 24px 20px}
+.chat-input-inner{max-width:720px;margin:0 auto}
+.input-row{display:flex;align-items:flex-end;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:10px 14px;transition:.2s}
+.input-row:focus-within{border-color:rgba(255,255,255,.25)}
+.chat-ta{flex:1;background:none;border:none;color:#fff;font-size:14px;font-family:inherit;outline:none;resize:none;min-height:22px;max-height:90px;line-height:1.5}
+.chat-ta::placeholder{color:rgba(255,255,255,.2)}
+.send-btn{width:34px;height:34px;background:#fff;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+.send-btn:hover{background:rgba(255,255,255,.9)}
+.send-btn:disabled{opacity:.3;cursor:not-allowed}
+.input-hint{font-size:11px;color:rgba(255,255,255,.15);text-align:center;margin-top:8px}
+
+@media(max-width:700px){
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .steps-grid{grid-template-columns:1fr}
+  .feature-inner,.feature-inner.reverse{grid-template-columns:1fr}
+  .deals-g{grid-template-columns:1fr}
+  .insights-g{grid-template-columns:1fr}
+  .feature-inner.reverse{direction:ltr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('landing')">
+      <div class="nav-logo-mark">∞</div>
+      <span class="nav-logo-text">ISAAC</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-link" onclick="showPage('chat')">Talk to ISAAC</button>
+      <button class="nav-cta" onclick="showPage('profile')">Calculate Your Value</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== LANDING ===================== -->
+<div id="landing" class="page active">
+
+  <section class="hero">
+    <h1 class="hero-title">Your NIL value,<br><span class="highlight">finally calculated.</span></h1>
+    <p class="hero-sub">ISAAC is your AI sports agent. Know your worth, understand your market, and get advice that actually moves the needle.</p>
+
+    <div class="hero-acronym">
+      <span><strong>I</strong>nphinity &nbsp;<strong>S</strong>ports &nbsp;<strong>A</strong>utomated &nbsp;<strong>A</strong>dvisory &nbsp;<strong>C</strong>ompanion</span>
+    </div>
+
+    <div class="hero-btns">
+      <button class="btn-hero-primary" onclick="showPage('profile')">Calculate My NIL Value</button>
+      <button class="btn-hero-secondary" onclick="showPage('chat')">Talk to ISAAC</button>
+    </div>
+    <p class="hero-scroll-hint">Free · No signup required</p>
+  </section>
+
+  <section class="feature" style="border-top:1px solid rgba(255,255,255,.06)">
+    <div class="feature-inner">
+      <div class="feature-copy">
+        <p class="eyebrow">The Calculator</p>
+        <h2>Your real number. Not a guess.</h2>
+        <p>ISAAC's algorithm weighs your sport, recruiting status, social media reach, and local market to generate a personalized annual NIL value — with a breakdown by deal type.</p>
+        <ul>
+          <li>Sport-specific benchmarks calibrated to HS markets</li>
+          <li>Social media value modeled on real brand CPM rates</li>
+          <li>Deal-type breakdown: local sponsors, posts, apparel, camps</li>
+          <li>State NIL compliance context included</li>
+        </ul>
+      </div>
+      <div class="feature-visual" style="gap:14px;padding:32px">
+        <div style="font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Annual NIL Value</div>
+        <div style="font-size:60px;font-weight:800;color:#fff;letter-spacing:-3px;line-height:1">$2,400</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.25);margin-bottom:20px">Range: $1,800 – $3,000 / year</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:6px"><span>Social Media</span><span>62/100</span></div>
+            <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px"><div style="height:100%;width:62%;background:#fff;border-radius:2px"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:6px"><span>Recruiting</span><span>35/100</span></div>
+            <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px"><div style="height:100%;width:35%;background:#fff;border-radius:2px"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:6px"><span>Market</span><span>70/100</span></div>
+            <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px"><div style="height:100%;width:70%;background:#fff;border-radius:2px"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature">
+    <div class="feature-inner reverse">
+      <div class="feature-copy">
+        <p class="eyebrow">ISAAC Chat</p>
+        <h2>An agent that actually knows your situation.</h2>
+        <p>Talk to ISAAC after your valuation and get personalized advice — not generic tips. ISAAC knows your sport, your market, your numbers, and your state's NIL rules.</p>
+        <ul>
+          <li>5 free messages per session — no account needed</li>
+          <li>Knows every state's HS NIL compliance rules</li>
+          <li>Helps you build a media kit and outreach strategy</li>
+          <li>Direct, honest. Not a motivational poster.</li>
+        </ul>
+      </div>
+      <div class="feature-visual">
+        <div class="preview-header">
+          <div class="isaac-mark">∞</div>
+          <div>
+            <div class="preview-name">ISAAC</div>
+            <div class="preview-status"><div class="status-dot"></div>Online</div>
+          </div>
+        </div>
+        <div class="preview-msg isaac">Your TikTok engagement is actually your strongest asset right now — not your recruiting rank. Brands care about who's actually watching.</div>
+        <div class="preview-msg user">How do I land my first deal?</div>
+        <div class="preview-msg isaac">Three local businesses, this week. A gym, a restaurant, and a local apparel shop. Keep your pitch to three sentences. I'll help you write it.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Three steps to your value.</h2>
+        <p>No account required to see your number.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step">
+          <p class="step-n">Step 01</p>
+          <h3>Build your profile</h3>
+          <p>Sport, position, recruiting status, social stats, and your market. Takes under three minutes.</p>
+        </div>
+        <div class="step">
+          <p class="step-n">Step 02</p>
+          <h3>Get your valuation</h3>
+          <p>ISAAC calculates your annual NIL value with a full breakdown by score and deal type.</p>
+        </div>
+        <div class="step">
+          <p class="step-n">Step 03</p>
+          <h3>Talk strategy</h3>
+          <p>Ask ISAAC anything — how to find deals, build your brand, or navigate your state's NIL rules.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-strip">
+    <h2>Your value is real.<br>Go find out what it is.</h2>
+    <p>Free calculator. No signup. Results in minutes.</p>
+    <button class="btn-hero-primary" onclick="showPage('profile')">Calculate My NIL Value</button>
+  </section>
+
+  <footer>
+    <p>ISAAC — Inphinity Sports Automated Advisory Companion. NIL valuations are estimates for educational purposes only. Always verify state-specific rules with your school's athletic department before entering any agreement. © 2026 ISAAC.</p>
+  </footer>
+</div>
+
+<!-- ===================== PROFILE ===================== -->
+<div id="profile-page" class="page" style="display:none">
+  <div class="profile-wrap fade-up">
+    <div class="profile-header">
+      <button class="back-btn" onclick="showPage('landing')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Back
+      </button>
+      <h1>Build your profile</h1>
+      <p>ISAAC needs a few details to calculate your NIL value.</p>
+      <div class="prog-track">
+        <div class="prog-seg on" id="ps0"></div>
+        <div class="prog-seg" id="ps1"></div>
+        <div class="prog-seg" id="ps2"></div>
+        <div class="prog-seg" id="ps3"></div>
+      </div>
+      <div class="prog-labels">
+        <div class="prog-label on" id="pl0">You</div>
+        <div class="prog-label" id="pl1">Sport</div>
+        <div class="prog-label" id="pl2">Details</div>
+        <div class="prog-label" id="pl3">Social</div>
+      </div>
+    </div>
+
+    <!-- Step 0: About You -->
+    <div id="s0" class="form-card">
+      <h2>About you</h2>
+      <div class="grid2">
+        <div class="field"><label>First Name</label><input id="f_first" placeholder="Marcus" /></div>
+        <div class="field"><label>Last Name</label><input id="f_last" placeholder="Johnson" /></div>
+      </div>
+      <div class="field">
+        <label>Graduation Year</label>
+        <select id="f_year">
+          <option value="2025">2025</option><option value="2026" selected>2026</option>
+          <option value="2027">2027</option><option value="2028">2028</option>
+        </select>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>City</label><input id="f_city" placeholder="Los Angeles" /></div>
+        <div class="field">
+          <label>State</label>
+          <select id="f_state">
+            <option value="">Select…</option>
+            <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+            <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+            <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+            <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+            <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+            <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option>
+            <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+            <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+            <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+            <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Where you're from</label>
+        <p class="hint">This helps estimate your local brand market — no wrong answer</p>
+        <select id="f_market">
+          <option value="major">Major city (NYC, LA, Chicago, Houston, Dallas…)</option>
+          <option value="major_suburb">Major metro suburb (outside a top-10 city)</option>
+          <option value="mid" selected>Mid-size city (Austin, Nashville, Charlotte…)</option>
+          <option value="small">Smaller town or rural area</option>
+        </select>
+      </div>
+      <div class="field"><label>School Name</label><input id="f_school" placeholder="Lincoln High School" /></div>
+      <div class="field">
+        <label>School Size</label>
+        <select id="f_school_size">
+          <option value="small">Small — under 500 students</option>
+          <option value="medium" selected>Medium — 500 to 1,500 students</option>
+          <option value="large">Large — 1,500+ students</option>
+        </select>
+      </div>
+      <div class="form-nav">
+        <button class="btn-next" onclick="goStep(1)">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 1: Sport -->
+    <div id="s1" class="form-card hidden">
+      <h2>Your sport</h2>
+      <div class="field">
+        <label>Sport</label>
+        <select id="f_sport" onchange="renderSportDetails();updateRecruitingSection()">
+          <option value="">Select your sport…</option>
+          <option value="football">Football</option>
+          <option value="basketball">Basketball</option>
+          <option value="baseball">Baseball</option>
+          <option value="softball">Softball</option>
+          <option value="soccer">Soccer</option>
+          <option value="volleyball">Volleyball</option>
+          <option value="track">Track & Field</option>
+          <option value="swimming">Swimming</option>
+          <option value="tennis">Tennis</option>
+          <option value="golf">Golf</option>
+          <option value="lacrosse">Lacrosse</option>
+          <option value="wrestling">Wrestling</option>
+          <option value="gymnastics">Gymnastics</option>
+          <option value="hockey">Hockey</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div id="recruiting-section">
+        <!-- Populated dynamically by updateRecruitingSection() -->
+        <div class="field">
+          <label>Recruiting Stars</label>
+          <p class="hint">Leave as NR if you're not ranked on 247Sports, Rivals, or On3</p>
+          <div class="star-grid" id="star-grid">
+            <button class="star-opt on" onclick="setStar(0)">NR</button>
+            <button class="star-opt" onclick="setStar(1)">1★</button>
+            <button class="star-opt" onclick="setStar(2)">2★</button>
+            <button class="star-opt" onclick="setStar(3)">3★</button>
+            <button class="star-opt" onclick="setStar(4)">4★</button>
+            <button class="star-opt" onclick="setStar(5)">5★</button>
+          </div>
+          <div class="star-desc" id="star-desc">Not nationally ranked. Your social presence and local market are your biggest levers.</div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="goStep(0)">Back</button>
+        <button class="btn-next" onclick="goStep(2)">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Sport Details (dynamic) -->
+    <div id="s2" class="form-card hidden">
+      <h2 id="sport-detail-title">Sport details</h2>
+      <div id="sport-detail-fields"></div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="goStep(1)">Back</button>
+        <button class="btn-next" onclick="goStep(3)">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Social -->
+    <div id="s3" class="form-card hidden">
+      <h2>Social media</h2>
+      <p style="font-size:13px;color:rgba(255,255,255,.35);margin-bottom:24px">Leave blank for platforms you're not on. Don't inflate — brands verify.</p>
+
+      <div class="social-platform">
+        <div class="social-platform-title"><div class="platform-dot ig-dot"></div>Instagram</div>
+        <div class="field"><label>Followers</label><input id="f_ig_f" type="number" placeholder="4,200" /></div>
+      </div>
+
+      <div class="social-platform">
+        <div class="social-platform-title"><div class="platform-dot tt-dot"></div>TikTok</div>
+        <div class="field"><label>Followers</label><input id="f_tt_f" type="number" placeholder="12,000" /></div>
+      </div>
+
+      <div class="grid2">
+        <div class="social-platform">
+          <div class="social-platform-title"><div class="platform-dot tw-dot"></div>Twitter / X</div>
+          <div class="field"><label>Followers</label><input id="f_tw_f" type="number" placeholder="800" /></div>
+        </div>
+        <div class="social-platform">
+          <div class="social-platform-title"><div class="platform-dot yt-dot"></div>YouTube</div>
+          <div class="field"><label>Subscribers</label><input id="f_yt_s" type="number" placeholder="400" /></div>
+        </div>
+      </div>
+
+      <div class="isaac-tip">
+        <p><strong>ISAAC's note:</strong> Most high school athletes have smaller followings — and that's totally fine. Even a 2,000-follower account with strong engagement can generate local deals. Be accurate.</p>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-back" onclick="goStep(2)">Back</button>
+        <button class="btn-next" id="calc-btn" onclick="runCalc()">Calculate My Value</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== VALUATION ===================== -->
+<div id="valuation-page" class="page" style="display:none">
+  <div class="val-wrap">
+    <div class="val-bar">
+      <button class="back-btn" onclick="showPage('profile')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Recalculate
+      </button>
+      <button class="val-chat-btn" onclick="showPage('chat')">Talk to ISAAC →</button>
+    </div>
+
+    <div class="val-hero">
+      <div class="val-top">
+        <div>
+          <div class="val-eyebrow">Your Estimated Annual NIL Value</div>
+          <div class="val-number" id="v-num">—</div>
+          <div class="val-range" id="v-range"></div>
+        </div>
+        <div class="tier-pill" id="v-tier">—</div>
+      </div>
+      <div class="isaac-summary">
+        <div class="isaac-mark">∞</div>
+        <div>
+          <div class="summary-name">ISAAC</div>
+          <div class="summary-text" id="v-summary">Calculating…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="val-card">
+      <h2>Score breakdown</h2>
+      <div id="score-rows" style="margin-top:20px"></div>
+    </div>
+
+    <div class="val-card">
+      <h2>How you compare</h2>
+      <p class="card-sub">Real NIL benchmarks for high school athletes</p>
+      <div id="benchmarks-section" style="display:flex;flex-direction:column;gap:12px;margin-top:4px"></div>
+    </div>
+
+    <div class="val-card">
+      <h2>Deal type breakdown</h2>
+      <p class="card-sub">Estimated per-deal value</p>
+      <div class="deals-g" id="deals-g"></div>
+    </div>
+
+    <div class="val-card">
+      <h2>ISAAC's read</h2>
+      <div style="height:12px"></div>
+      <div class="insights-g" id="insights-g"></div>
+    </div>
+
+    <div class="val-cta">
+      <div class="isaac-mark">∞</div>
+      <h3>Want ISAAC to build you a gameplan?</h3>
+      <p>Ask about your first deal, outreach strategy, social growth, or your state's NIL rules. First 5 messages are free.</p>
+      <button class="btn-hero-primary" onclick="showPage('chat')">Talk to ISAAC</button>
+    </div>
+
+    <p class="disclaimer">Valuations are estimates based on market benchmarks and are for educational purposes only.<br>Always verify NIL deal terms with your school's athletic department before signing anything.</p>
+  </div>
+</div>
+
+<!-- ===================== CHAT ===================== -->
+<div id="chat-page" class="page" style="display:none">
+  <nav class="chat-nav">
+    <div class="chat-nav-inner">
+      <div class="chat-nav-left">
+        <button class="back-btn" onclick="showPage('landing')" style="margin:0">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="isaac-mark" style="width:30px;height:30px;font-size:11px;border-radius:8px">∞</div>
+        <div class="chat-agent-info">
+          <div class="aname">ISAAC</div>
+          <div class="astatus"><div class="status-dot"></div>Online</div>
+        </div>
+      </div>
+      <div class="chat-nav-right">
+        <button class="chat-pill" id="v-btn" style="display:none" onclick="showPage('valuation')">My Valuation</button>
+        <button class="chat-pill" onclick="showPage('profile')">Get My Value</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="messages" id="messages">
+    <div id="starters-section" class="starters-wrap">
+      <div class="starters-label">Suggested questions</div>
+      <div class="starters-row">
+        <button class="starter" onclick="sendStarter(this)">How do I land my first deal?</button>
+        <button class="starter" onclick="sendStarter(this)">How do I negotiate my rate?</button>
+        <button class="starter" onclick="sendStarter(this)">Write me an outreach DM for a brand</button>
+        <button class="starter" onclick="sendStarter(this)">How do I grow my TikTok faster?</button>
+        <button class="starter" onclick="sendStarter(this)">What are the NIL rules in my state?</button>
+        <button class="starter" onclick="sendStarter(this)">How do I build a media kit?</button>
+        <button class="starter" onclick="sendStarter(this)">What's an average NIL deal for a HS athlete?</button>
+      </div>
+    </div>
+    <div id="msg-list"></div>
+    <div id="typing-row" style="display:none">
+      <div class="typing-row" style="gap:10px;align-items:center;padding-bottom:16px">
+        <div class="isaac-mark" style="width:30px;height:30px;font-size:11px;border-radius:8px;flex-shrink:0">∞</div>
+        <div class="typing-dots"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input-bar">
+    <div class="chat-input-inner">
+      <div class="input-row">
+        <textarea class="chat-ta" id="chat-ta" placeholder="Ask ISAAC anything…" rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,90)+'px'"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMsg()">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <p class="input-hint">5 free messages per session · ISAAC is for informational purposes only</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let curStep=0, selStars=0, valResult=null, athleteData={};
+let msgs=[], chatLoading=false, freeMessages=5, gateShown=false;
+
+// ─────────────────────────────────────────────
+// NAV
+// ─────────────────────────────────────────────
+function showPage(p){
+  document.querySelectorAll('.page').forEach(el=>{el.style.display='none';el.classList.remove('active')});
+  const id={landing:'landing','profile':'profile-page',valuation:'valuation-page',chat:'chat-page'}[p];
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.style.display='block';
+  el.classList.add('active');
+  document.getElementById('main-nav').style.display=(p==='chat')?'none':'flex';
+  window.scrollTo(0,0);
+  if(p==='chat'){
+    if(valResult)document.getElementById('v-btn').style.display='inline-flex';
+    if(msgs.length===0){
+      let intro;
+      if(valResult&&athleteData.first&&athleteData.first!=='Athlete'){
+        const r=valResult;
+        const sn=sportNames[athleteData.sport]||'your sport';
+        intro=`${athleteData.first}. I've seen your numbers — ${r.tier} tier, ${fmt(r.mid)} annual NIL value in ${sn}.\n\nI'm ISAAC, your AI sports agent. I know your market, your scoring breakdown, and where you have room to grow. Ask me anything — first deal, outreach strategy, social content, state NIL rules. Let's get to work.`;
+      } else if(athleteData.sport){
+        const sn=sportNames[athleteData.sport]||'your sport';
+        intro=`What's up. I'm ISAAC — your AI sports agent. I've got your ${sn} profile in front of me.\n\nAsk me anything: how to find your first deal, what brands to target, how to grow your social, or how NIL rules work in your state.`;
+      } else {
+        intro=`What's up. I'm ISAAC — your AI sports agent.\n\nI can help with deals, outreach strategy, social content, state NIL rules, media kits, and more. If you haven't run your valuation yet, do that first — I can give you much more specific advice with your numbers. What do you need?`;
+      }
+      addMsg('assistant',intro);
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// PROFILE STEPS
+// ─────────────────────────────────────────────
+function goStep(n){
+  document.getElementById('s'+curStep).classList.add('hidden');
+  document.getElementById('s'+n).classList.remove('hidden');
+  for(let i=0;i<4;i++){
+    document.getElementById('ps'+i).classList.toggle('on',i<=n);
+    document.getElementById('pl'+i).classList.toggle('on',i===n);
+  }
+  curStep=n;
+  window.scrollTo(0,0);
+  if(n===2)buildSportDetails();
+}
+
+function setStar(n){
+  selStars=n;
+  document.querySelectorAll('.star-opt').forEach((b,i)=>b.classList.toggle('on',i===n));
+  const desc=['Not nationally ranked. Your social presence and local market are your biggest levers.',
+    'D1 interest starting to develop. Regional programs are watching.',
+    'Legitimate D1 prospect. Scholarship offers are likely.',
+    'Solid mid-major to Power conference target.',
+    'High 4-star — Power conference programs are actively recruiting you.',
+    'Elite national prospect. Top 30 in your class. National brands will notice.'];
+  const el=document.getElementById('star-desc');
+  if(el)el.textContent=desc[n];
+}
+
+// Sport-specific recruiting configurations
+const recruitingCfg={
+  football:{
+    label:'Recruiting Stars',
+    hint:'Based on 247Sports, Rivals, or On3',
+    type:'stars',
+    descs:['Not nationally ranked. Your social presence and local market are your biggest levers.',
+      'D1 interest starting to develop. Regional programs are watching.',
+      'Legitimate D1 prospect. Scholarship offers are likely.',
+      'Solid mid-major to Power conference target.',
+      'High 4-star — Power conference programs are actively recruiting you.',
+      'Elite national prospect. Top 30 in your class. National brands will notice.']
+  },
+  basketball:{
+    label:'Recruiting Stars',
+    hint:'Based on 247Sports, Rivals, ESPN 100, or On3',
+    type:'stars',
+    descs:['Not nationally ranked. Your social and local market carry the most weight.',
+      'Low D1 / D2 interest. Regional programs are watching.',
+      'Legitimate D1 prospect. Mid-major scholarship offers likely.',
+      'High-major D1 target. Making national recruiting lists.',
+      'Top 50 recruit. Power 5 schools calling.',
+      'Top 10 national prospect. National brands pay attention at this level.']
+  },
+  baseball:{
+    label:'Perfect Game / PBR Rating',
+    hint:'Based on Perfect Game, Prep Baseball Report, or Area Code ranking',
+    type:'custom',
+    options:['Not currently ranked','State showcase / locally scouted','PBR / PG state ranking','PBR / PG regional top 500','Nationally ranked (PG / PBR top 500)'],
+    values:[0,1,2,3,5],
+    descs:['No current national ranking. Local showcases are your path to exposure.',
+      'You\'re on the radar locally — keep getting reps at bigger events.',
+      'State-level recognition. College programs are starting to look.',
+      'Regional recognition. D1 and D2 programs are watching.',
+      'Elite national prospect. College coaches are tracking your progress closely.']
+  },
+  softball:{
+    label:'Recruiting Level',
+    hint:'Based on Extra Inning Softball, FloSoftball, or tournament results',
+    type:'custom',
+    options:['Not ranked / local level','State-level competitor','Regional / tournament standout','Nationally recruited / committed'],
+    values:[0,1,3,5],
+    descs:['Building your portfolio. Showcase tournaments are the fastest path up.',
+      'Strong state level player. Regional exposure events are your next step.',
+      'You\'re on college coaches\' radars at the regional level.',
+      'Top-tier national prospect. D1 / Power 5 level.']
+  },
+  soccer:{
+    label:'Club / Recruiting Level',
+    hint:'Based on TopDrawerSoccer, club tier, or college commitment',
+    type:'custom',
+    options:['Local / recreational club','State ODP / regional club','ECNL-R / NPSL / GA team','MLS Next / ECNL team','TDS Top 100 / college committed'],
+    values:[0,1,3,4,5],
+    descs:['Just getting started. Club level and showcases will open doors.',
+      'You have state-level exposure. Regional events are next.',
+      'High-level club. College programs are actively watching.',
+      'Elite club circuit. Strong D1 recruiting pipeline.',
+      'Top national recruit. D1 programs competing for your commitment.']
+  },
+  volleyball:{
+    label:'Recruiting / Club Level',
+    hint:'Based on PrepVolleyball, AVCA, or club tournament level',
+    type:'custom',
+    options:['School team / local club','State-level club','AAU Nationals qualifier / regional elite','National-level club (Nationals top 16)','PrepVolleyball top 50 / college committed'],
+    values:[0,1,2,4,5],
+    descs:['Strong base. School exposure plus club events will build your profile.',
+      'State-recognized level. Keep competing at bigger tournaments.',
+      'Solid national exposure. D1 and D2 coaches are watching.',
+      'Elite club level. Strong D1 recruiting pipeline.',
+      'National elite. Power 5 programs are competing for your commitment.']
+  },
+  tennis:{
+    label:'UTR Rating',
+    hint:'Universal Tennis Rating (UTR) — the standard for college tennis recruiting',
+    type:'custom',
+    options:['No UTR / just starting','UTR below 6 (developing)','UTR 6–8 (D3 / NAIA level)','UTR 8–10 (D2 / mid-major D1)','UTR 10–12 (D1 prospect)','UTR 12+ (elite D1 / national)'],
+    values:[0,1,2,3,4,5],
+    descs:['No UTR yet — sign up on utrsports.com, it\'s free and critical for recruiting.',
+      'Developing level. UTR events and local tournaments will build your rating.',
+      'Competitive college-bound level. D3 and NAIA programs are realistic.',
+      'Solid D2 / mid-major D1 recruiting range.',
+      'Strong D1 prospect. Power conference programs are watching.',
+      'Elite national level. Top D1 programs and sponsor deals are realistic.']
+  },
+  swimming:{
+    label:'SwimCloud / NISCA Level',
+    hint:'Based on SwimCloud ranking or NISCA All-American cut times',
+    type:'custom',
+    options:['Local / team contributor','Regional competitor','State qualifier','State championship finalist','NISCA All-American (top times nationally)'],
+    values:[0,1,2,4,5],
+    descs:['Every elite swimmer started here. Focus on cutting time at every meet.',
+      'You\'re getting regionally competitive. State cuts are your target.',
+      'State-level recognition. College coaches pay attention at this stage.',
+      'Top-tier state swimmer. D1 and D2 recruiting is realistic.',
+      'Elite national level. D1 programs actively recruiting you.']
+  },
+  golf:{
+    label:'AJGA / Golfstat Level',
+    hint:'Based on AJGA ranking, Golfstat, or handicap index',
+    type:'custom',
+    options:['No official handicap / casual','Handicap 15+ (developing)','Handicap 6–14 (competitive)','Handicap 1–5 / state-ranked','AJGA regionally ranked / scratch','AJGA nationally ranked / sub-scratch'],
+    values:[0,1,2,3,4,5],
+    descs:['Get an official USGA handicap — it\'s the starting point for all recruiting conversations.',
+      'Keep playing — every round builds your index.',
+      'Legitimately competitive. Local events and state qualifiers are your next step.',
+      'Strong level. College programs will want to see your tournament record.',
+      'Solid D1 / D2 recruiting range. AJGA and Golfstat profile are key.',
+      'Elite national prospect. D1 programs and sponsor potential are both real.']
+  },
+  track:{
+    label:'Competitive Level',
+    hint:'Based on state rankings, national qualifiers, or MileSplit',
+    type:'custom',
+    options:['Local / team contributor','District / conference level','State qualifier','State top 10 / finalist','National qualifier / All-American'],
+    values:[0,1,2,4,5],
+    descs:['The base — every top athlete started at the local level. Keep competing.',
+      'Conference-level recognition. Section / regional events are next.',
+      'State-level athlete. College coaches start looking here.',
+      'Top-tier state competitor. D1 and D2 recruiting is realistic.',
+      'Elite level. National brands take notice at this tier.']
+  },
+  wrestling:{
+    label:'Competitive Level',
+    hint:'Based on state rankings or Flowrestling',
+    type:'custom',
+    options:['Team contributor','Regional qualifier','State qualifier','State placer (top 8)','State champion / nationally ranked'],
+    values:[0,1,2,4,5],
+    descs:['Building the foundation. Tournament experience is everything.',
+      'Showing up at regional events. State qualification is the goal.',
+      'State-level wrestler. College programs start watching here.',
+      'State-recognized athlete. Scholarship conversations are realistic.',
+      'Elite national level. D1 programs competing for your commitment.']
+  },
+  gymnastics:{
+    label:'Competitive Level',
+    hint:'Based on USA Gymnastics Junior Olympic levels',
+    type:'custom',
+    options:['Level 6–7 / Xcel Platinum','Level 8 / Xcel Diamond','Level 9','Level 10','J.O. Elite / national competitor'],
+    values:[1,2,3,4,5],
+    descs:['Strong foundation level. Keep competing and building your skill set.',
+      'Solid competitive level. D3 and NAIA programs are realistic.',
+      'High-level competitor. D1 and D2 programs are watching.',
+      'Elite level. Top college programs are recruiting at Level 10.',
+      'National elite. D1 power programs and commercial opportunities are both real.']
+  },
+  lacrosse:{
+    label:'Recruiting Level',
+    hint:'Based on Inside Lacrosse or club team tier',
+    type:'custom',
+    options:['Local / school only','Regional club','National club circuit','Inside Lacrosse / Committed to D1'],
+    values:[0,1,3,5],
+    descs:['School-level exposure. Club teams open the recruiting door significantly.',
+      'On the radar at the regional level. National events are your next step.',
+      'High-level club exposure. D1 and D2 programs are watching.',
+      'Top national recruit. Power programs competing for your commitment.']
+  },
+  hockey:{
+    label:'Competitive Level',
+    hint:'Based on USA Hockey or USHL/NAHL status',
+    type:'custom',
+    options:['HS varsity / local club','Tier II travel program','AAA / Tier I travel','USHL / NAHL prospect or junior-bound'],
+    values:[0,2,4,5],
+    descs:['High school and local club is where most players start. Keep developing.',
+      'Tier II travel experience builds your profile with college coaches.',
+      'AAA level. Division 1 college programs are paying attention.',
+      'Elite junior hockey track. D1 programs actively recruiting.']
+  },
+  _default:{
+    label:'Competitive Level',
+    hint:'How competitive are you at the state or national level?',
+    type:'custom',
+    options:['Team / local contributor','Regionally competitive','State-level competitor','Top state / regionally elite','National-level competitor'],
+    values:[0,1,3,4,5],
+    descs:['Just getting started. Exposure events and social content are your levers.',
+      'Regional recognition. Keep competing at bigger stages.',
+      'State-level athlete — solid NIL foundation to build from.',
+      'You\'re getting noticed at a high level. The recruiting spotlight helps NIL.',
+      'Elite national level. Commercial opportunities are realistic.']
+  }
+};
+
+function updateRecruitingSection(){
+  const sport=document.getElementById('f_sport').value||'';
+  const cfg=recruitingCfg[sport]||recruitingCfg._default;
+  const sec=document.getElementById('recruiting-section');
+  selStars=0;
+  if(cfg.type==='stars'){
+    sec.innerHTML=`<div class="field">
+      <label>${cfg.label}</label>
+      <p class="hint">${cfg.hint}</p>
+      <div class="star-grid" id="star-grid">
+        <button class="star-opt on" onclick="setStar(0)">NR</button>
+        <button class="star-opt" onclick="setStar(1)">1★</button>
+        <button class="star-opt" onclick="setStar(2)">2★</button>
+        <button class="star-opt" onclick="setStar(3)">3★</button>
+        <button class="star-opt" onclick="setStar(4)">4★</button>
+        <button class="star-opt" onclick="setStar(5)">5★</button>
+      </div>
+      <div class="star-desc" id="star-desc">${cfg.descs[0]}</div>
+    </div>`;
+  } else {
+    // Custom option buttons
+    const btns=cfg.options.map((o,i)=>`<button class="toggle-opt${i===0?' on':''}" onclick="setCustomRating(${cfg.values[i]},this,'${cfg.descs?cfg.descs[i].replace(/'/g,"&apos;"):''}','recruiting-desc')">${o}</button>`).join('');
+    selStars=cfg.values[0]||0;
+    sec.innerHTML=`<div class="field">
+      <label>${cfg.label}</label>
+      <p class="hint">${cfg.hint}</p>
+      <div class="toggle-group" id="recruiting-toggle-group">${btns}</div>
+      <div class="star-desc" id="recruiting-desc">${cfg.descs?cfg.descs[0]:''}</div>
+    </div>`;
+  }
+}
+
+function setCustomRating(val,btn,desc,descId){
+  selStars=val;
+  const group=btn.parentElement;
+  group.querySelectorAll('.toggle-opt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const el=document.getElementById(descId);
+  if(el&&desc)el.textContent=desc;
+}
+
+// ─────────────────────────────────────────────
+// SPORT-SPECIFIC DETAIL FIELDS
+// ─────────────────────────────────────────────
+const sportDetails={
+  football:{
+    title:'Football details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Position',options:['Quarterback','Running Back','Wide Receiver','Tight End','Offensive Lineman','Defensive Lineman','Linebacker','Cornerback','Safety','Kicker / Punter']},
+      {id:'sp_role',type:'toggle',label:'Role on team',options:['Starter','Backup / Developing']},
+      {id:'sp_div',type:'toggle',label:'School division',options:['Public 6A / 5A','Public 4A or below','Private / Parochial']},
+    ]
+  },
+  basketball:{
+    title:'Basketball details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Position',options:['Point Guard','Shooting Guard','Small Forward','Power Forward','Center']},
+      {id:'sp_role',type:'toggle',label:'Role on team',options:['Starter','Sixth Man','Reserve']},
+      {id:'sp_lvl',type:'toggle',label:'Level of competition',options:['Varsity','JV']},
+    ]
+  },
+  baseball:{
+    title:'Baseball details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Position',options:['Pitcher','Catcher','First Base','Second Base','Third Base','Shortstop','Left Field','Center Field','Right Field','Utility']},
+      {id:'sp_role',type:'toggle',label:'Role',options:['Starter / Everyday','Reliever / Sub']},
+      {id:'sp_lvl',type:'toggle',label:'Level',options:['Varsity','JV']},
+    ]
+  },
+  softball:{
+    title:'Softball details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Position',options:['Pitcher','Catcher','Infield','Outfield','Utility']},
+      {id:'sp_lvl',type:'toggle',label:'Level',options:['Varsity','JV']},
+    ]
+  },
+  soccer:{
+    title:'Soccer details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Position',options:['Goalkeeper','Defender','Midfielder','Forward']},
+      {id:'sp_lvl',type:'toggle',label:'Level',options:['Varsity','JV']},
+      {id:'sp_club',type:'toggle',label:'Club team level',options:['MLS Next / ECNL','Regional Premier','Local / Rec']},
+    ]
+  },
+  volleyball:{
+    title:'Volleyball details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Position',options:['Outside Hitter','Middle Blocker','Right Side / Opposite','Setter','Libero / Defensive Specialist']},
+      {id:'sp_lvl',type:'toggle',label:'Level',options:['Varsity','JV']},
+      {id:'sp_club',type:'toggle',label:'Club level',options:['National / Premier','Regional','Local']},
+    ]
+  },
+  track:{
+    title:'Track & Field details',
+    fields:[
+      {id:'sp_event',type:'select',label:'Primary event',options:['Sprints (100m / 200m / 400m)','Hurdles','Middle Distance (800m / 1500m)','Long Distance (Mile+)','Long / Triple Jump','High Jump / Pole Vault','Shot Put / Discus / Javelin','Decathlon / Heptathlon']},
+      {id:'sp_rank',type:'toggle',label:'State ranking',options:['Top 5 in state','Top 25 in state','Competitive but not ranked']},
+    ]
+  },
+  swimming:{
+    title:'Swimming details',
+    fields:[
+      {id:'sp_event',type:'select',label:'Primary stroke / event',options:['Freestyle (50 / 100)','Freestyle Distance (200+)','Backstroke','Breaststroke','Butterfly','Individual Medley']},
+      {id:'sp_rank',type:'toggle',label:'Level',options:['State qualifier / placer','Regionally competitive','Team contributor']},
+    ]
+  },
+  tennis:{
+    title:'Tennis details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Team position (singles)',options:['#1 Singles','#2 Singles','#3 Singles','#4 Singles','#5–6 Singles / Doubles only','Not on school team']},
+      {id:'sp_rank',type:'toggle',label:'State / regional ranking',options:['Top 20 in state','Top 100 in state','Regionally ranked','Unranked']},
+      {id:'sp_usta',type:'toggle',label:'USTA rating (if applicable)',options:['5.0+','4.5','4.0','3.5 or below','N/A']},
+    ]
+  },
+  golf:{
+    title:'Golf details',
+    fields:[
+      {id:'sp_hcp',type:'select',label:'Handicap',options:['Scratch (0)','1–5','6–10','11–15','15+','No official handicap']},
+      {id:'sp_rank',type:'toggle',label:'Level',options:['State qualifier / placer','Regionally competitive','JV / developing']},
+    ]
+  },
+  lacrosse:{
+    title:'Lacrosse details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Position',options:['Attack','Midfield','Defense','Goalkeeper']},
+      {id:'sp_lvl',type:'toggle',label:'Level',options:['Varsity','JV']},
+      {id:'sp_club',type:'toggle',label:'Club level',options:['National / elite club','Regional club','Local / no club']},
+    ]
+  },
+  wrestling:{
+    title:'Wrestling details',
+    fields:[
+      {id:'sp_wt',type:'select',label:'Weight class',options:['106','113','120','126','132','138','144','150','157','165','175','190','215','285']},
+      {id:'sp_rank',type:'toggle',label:'Level',options:['State qualifier / placer','Regional competitor','Team contributor']},
+    ]
+  },
+  gymnastics:{
+    title:'Gymnastics details',
+    fields:[
+      {id:'sp_lvl',type:'select',label:'Competitive level',options:['Level 10 / Elite','Level 8–9','Level 6–7','Xcel Platinum / Diamond','Below Level 6']},
+      {id:'sp_nat',type:'toggle',label:'National competition',options:['Nationals competitor','Regional competitor','State level']},
+    ]
+  },
+  hockey:{
+    title:'Hockey details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Position',options:['Forward','Defenseman','Goaltender']},
+      {id:'sp_lvl',type:'toggle',label:'Level',options:['Varsity','JV','Club / AAA']},
+    ]
+  },
+  other:{
+    title:'Sport details',
+    fields:[
+      {id:'sp_pos',type:'select',label:'Your role / position',options:['Starter / Primary competitor','Sub / Developing','Captain / Team leader']},
+      {id:'sp_rank',type:'toggle',label:'How competitive are you?',options:['State-level competitor','Regional level','Local / recreational']},
+    ]
+  }
+};
+
+let sportSelections={};
+
+function buildSportDetails(){
+  const sport=document.getElementById('f_sport').value||'other';
+  const cfg=sportDetails[sport]||sportDetails.other;
+  document.getElementById('sport-detail-title').textContent=cfg.title;
+  sportSelections={};
+  let html='';
+  cfg.fields.forEach(f=>{
+    html+=`<div class="field"><label>${f.label}</label>`;
+    if(f.type==='select'){
+      html+=`<select id="${f.id}" onchange="sportSelections['${f.id}']=this.value"><option value="">Select…</option>`;
+      f.options.forEach(o=>html+=`<option value="${o}">${o}</option>`);
+      html+=`</select>`;
+    } else if(f.type==='toggle'){
+      html+=`<div class="toggle-group" id="${f.id}-group">`;
+      f.options.forEach((o,i)=>html+=`<button class="toggle-opt${i===0?' on':''}" onclick="setToggle('${f.id}','${o}',this)">${o}</button>`);
+      html+=`</div>`;
+      sportSelections[f.id]=f.options[0];
+    }
+    html+=`</div>`;
+  });
+  document.getElementById('sport-detail-fields').innerHTML=html;
+}
+
+function setToggle(fieldId,val,btn){
+  sportSelections[fieldId]=val;
+  const group=document.getElementById(fieldId+'-group');
+  group.querySelectorAll('.toggle-opt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function renderSportDetails(){buildSportDetails();}
+
+// ─────────────────────────────────────────────
+// NIL CALCULATION (realistic HS values)
+// ─────────────────────────────────────────────
+const SPORT_CFG={
+  football:  {base:300,ceiling:15000,score:100},
+  basketball:{base:250,ceiling:12000,score:95},
+  baseball:  {base:80, ceiling:3000, score:55},
+  softball:  {base:70, ceiling:2500, score:50},
+  soccer:    {base:75, ceiling:2800, score:52},
+  volleyball:{base:65, ceiling:2200, score:46},
+  track:     {base:40, ceiling:1200, score:32},
+  swimming:  {base:40, ceiling:1000, score:30},
+  tennis:    {base:35, ceiling:900,  score:28},
+  golf:      {base:50, ceiling:1500, score:38},
+  lacrosse:  {base:55, ceiling:1800, score:40},
+  wrestling: {base:40, ceiling:1000, score:30},
+  gymnastics:{base:55, ceiling:1600, score:38},
+  hockey:    {base:70, ceiling:2200, score:42},
+  other:     {base:30, ceiling:700,  score:22},
+};
+
+// Sport detail score modifiers
+function getSportDetailModifier(sport){
+  const sel=sportSelections;
+  let mod=1.0;
+  // Football
+  if(sport==='football'){
+    if(sel.sp_pos==='Quarterback'||sel.sp_pos==='Wide Receiver')mod*=1.3;
+    if(sel.sp_role==='Starter')mod*=1.2;
+    if(sel.sp_div==='Public 6A / 5A')mod*=1.15;
+  }
+  // Basketball
+  if(sport==='basketball'){
+    if(sel.sp_pos==='Point Guard'||sel.sp_pos==='Small Forward')mod*=1.2;
+    if(sel.sp_role==='Starter')mod*=1.15;
+  }
+  // Tennis — penalize lower team spots
+  if(sport==='tennis'){
+    if(sel.sp_pos==='#1 Singles')mod*=1.4;
+    else if(sel.sp_pos==='#2 Singles')mod*=1.1;
+    else if(sel.sp_pos==='#3 Singles')mod*=0.85;
+    else if(sel.sp_pos==='#4 Singles')mod*=0.7;
+    else mod*=0.5;
+    if(sel.sp_rank==='Top 20 in state')mod*=1.5;
+    else if(sel.sp_rank==='Top 100 in state')mod*=1.2;
+    else if(sel.sp_rank==='Regionally ranked')mod*=0.9;
+    else mod*=0.6;
+  }
+  // Lacrosse
+  if(sport==='lacrosse'){
+    if(sel.sp_lvl==='JV')mod*=0.5;
+    if(sel.sp_club==='National / elite club')mod*=1.4;
+    else if(sel.sp_club==='Local / no club')mod*=0.75;
+  }
+  // Track
+  if(sport==='track'){
+    if(sel.sp_rank==='Top 5 in state')mod*=1.5;
+    else if(sel.sp_rank==='Top 25 in state')mod*=1.1;
+    else mod*=0.7;
+  }
+  // Wrestling
+  if(sport==='wrestling'){
+    if(sel.sp_rank==='State qualifier / placer')mod*=1.4;
+    else if(sel.sp_rank==='Regional competitor')mod*=1.0;
+    else mod*=0.65;
+  }
+  // Volleyball
+  if(sport==='volleyball'){
+    if(sel.sp_lvl==='JV')mod*=0.5;
+    if(sel.sp_club==='National / Premier')mod*=1.4;
+  }
+  // Generic JV penalty
+  if(sel.sp_lvl==='JV')mod*=0.55;
+  return mod;
+}
+
+function calcNIL(p){
+  const cfg=SPORT_CFG[p.sport]||SPORT_CFG.other;
+  const sportScore=cfg.score;
+
+  // Recruiting score & multiplier
+  const recS=[10,18,32,52,75,95];
+  const recM=[1.0,1.08,1.2,1.5,2.2,3.8];
+  const rS=recS[p.stars]||10;
+  const rM=recM[p.stars]||1.0;
+
+  // Market
+  const mktM={major:1.5,major_suburb:1.35,mid:1.2,small:1.0};
+  const premStates=['CA','FL','TX','NY','OH','GA','PA','IL','NC','MI','NJ','WA'];
+  let mktS=p.market==='major'?72:p.market==='major_suburb'?60:p.market==='mid'?50:30;
+  if(premStates.includes((p.state||'').toUpperCase()))mktS=Math.min(100,mktS+12);
+  if(p.school_size==='large')mktS=Math.min(100,mktS+8);
+
+  // Internal engagement rate tiers (more accurate than self-reported)
+  function engRate(followers){
+    if(followers<1000)return 0.08;
+    if(followers<10000)return 0.06;
+    if(followers<50000)return 0.04;
+    if(followers<100000)return 0.03;
+    return 0.02;
+  }
+
+  // Social
+  const ig=p.ig_f||0;
+  const tt=p.tt_f||0;
+  const tw=p.tw_f||0;
+  const yt=p.yt_s||0;
+  const ig_e=engRate(ig);
+  const tt_e=engRate(tt)*1.3; // TikTok natively higher
+  // Annual social value (realistic CPM × posts/year)
+  const ig_v=Math.round(ig*ig_e*0.04*8);
+  const tt_v=Math.round(tt*tt_e*0.025*10);
+  const tw_v=Math.round(tw*0.005*8);
+  const yt_v=Math.round(yt*0.0015*8);
+  const reach=ig+tt+tw+yt;
+  let socS=2;
+  if(reach>=500000)socS=100;
+  else if(reach>=200000)socS=85;
+  else if(reach>=100000)socS=68;
+  else if(reach>=50000)socS=52;
+  else if(reach>=20000)socS=38;
+  else if(reach>=10000)socS=26;
+  else if(reach>=5000)socS=18;
+  else if(reach>=2000)socS=11;
+  else if(reach>=500)socS=6;
+  const avgEng=((ig>0?ig_e*100:0)+(tt>0?tt_e*100:0))/Math.max(1,(ig>0?1:0)+(tt>0?1:0));
+  if(avgEng>8)socS=Math.min(100,socS+10);
+  else if(avgEng>5)socS=Math.min(100,socS+5);
+
+  const detailMod=getSportDetailModifier(p.sport);
+  const overall=Math.round(sportScore*0.18+rS*0.30+socS*0.37+mktS*0.15);
+
+  // Base value
+  const base=cfg.base*rM*(mktM[p.market]||1.0)*detailMod;
+  const socialAnnual=ig_v+tt_v+tw_v+yt_v;
+  const raw=base+socialAnnual;
+  const mid=Math.round(Math.min(raw,cfg.ceiling));
+  const floor=Math.round(mid*0.72);
+  const ceil=Math.round(mid*1.28);
+
+  const tierMap=[[85,'superstar'],[70,'elite'],[52,'established'],[35,'rising'],[0,'emerging']];
+  const tier=tierMap.find(t=>overall>=t[0])[1];
+
+  const tm={superstar:1.0,elite:0.82,established:0.62,rising:0.42,emerging:0.26};
+  const m=tm[tier];
+  const deals={
+    'Local Business Sponsorship':{f:Math.round(mid*0.12*m),c:Math.round(mid*0.30*m*1.4)},
+    'Sponsored Social Post':{f:Math.round(mid*0.08*m),c:Math.round(mid*0.20*m*1.4)},
+    'Apparel / Gear Deal':{f:Math.round(mid*0.06*m),c:Math.round(mid*0.16*m*1.4)},
+    'Camp / Clinic':{f:Math.round(mid*0.04*m),c:Math.round(mid*0.12*m*1.4)},
+    'Autograph Signing':{f:Math.round(mid*0.02*m),c:Math.round(mid*0.08*m*1.4)},
+  };
+
+  // Insights
+  const strengths=[],weaknesses=[],opps=[];
+  const sNames={football:'Football',basketball:'Basketball',baseball:'Baseball',softball:'Softball',soccer:'Soccer',volleyball:'Volleyball',track:'Track & Field',swimming:'Swimming',tennis:'Tennis',golf:'Golf',lacrosse:'Lacrosse',wrestling:'Wrestling',gymnastics:'Gymnastics',hockey:'Hockey',other:'Your sport'};
+  const sn=sNames[p.sport]||'Your sport';
+  if(sportScore>=85)strengths.push(`${sn} has the highest NIL ceiling of any HS sport`);
+  if(p.stars>=4)strengths.push(`${p.stars}-star recruit status draws national brand attention`);
+  else if(p.stars<=1&&overall<40)weaknesses.push('Low recruiting rank limits national appeal — local deals are your path right now');
+  if(reach>=20000)strengths.push(`${reach.toLocaleString()} combined followers is a meaningful audience for local brands`);
+  else if(reach<2000)weaknesses.push('Small social following right now — growing one platform to 2K+ opens the first local deals');
+  if(avgEng>8)strengths.push("High engagement rate — that's worth more to brands than raw follower count");
+  if(!tt||tt<1000)opps.push('TikTok is barely touched — sports content grows fast there and brands are actively buying it');
+  if(p.stars<3)opps.push('A breakout season can push your recruiting rank up and significantly raise your NIL ceiling');
+  if(overall<50)opps.push(`Start with 3–5 local ${p.city||'area'} businesses. Build a deal portfolio before targeting bigger brands`);
+  if((!yt||yt<200)&&(p.sport==='football'||p.sport==='basketball'))opps.push('A YouTube highlights channel is low-effort and adds annual value over time');
+
+  // Summary
+  const fmt=v=>v>=1000?`$${Math.round(v/1000)}K`:`$${v}`;
+  const openers={
+    superstar:`${fmt(mid)} a year — and that's conservative. You're in a tier where national brands pay attention.`,
+    elite:`${fmt(mid)} annually. That's real money. Your recruiting status is doing a lot of work here.`,
+    established:`You're sitting at ${fmt(mid)} in annual NIL value. Solid foundation. Let's build on it.`,
+    rising:`${fmt(mid)} a year right now. You're in the right direction — a few moves can push this meaningfully higher.`,
+    emerging:`Your current NIL value is ${fmt(mid)}. That's honest. The good news — there's a clear path up from here.`
+  };
+  let driver='';
+  if(socS>=50)driver='Your social media is your best lever right now.';
+  else if(rS>=50)driver=`Your recruiting status is carrying most of your value.`;
+  else driver=`Your ${sn} career in ${p.city||'your market'} is the foundation.`;
+  const summary=`${openers[tier]} ${driver}`;
+
+  return{mid,floor,ceil,tier,overall,
+    scores:{overall,social:socS,recruiting:rS,sport:sportScore,market:mktS},
+    deals,strengths,weaknesses,opps,summary,
+    social:{ig_v,tt_v,tw_v,yt_v,reach}};
+}
+
+async function runCalc(){
+  const btn=document.getElementById('calc-btn');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Calculating…';
+  const p={
+    sport:document.getElementById('f_sport').value||'other',
+    state:document.getElementById('f_state').value,
+    city:document.getElementById('f_city').value,
+    market:document.getElementById('f_market').value,
+    school_size:document.getElementById('f_school_size').value,
+    stars:selStars,
+    ig_f:+document.getElementById('f_ig_f').value||0,
+    tt_f:+document.getElementById('f_tt_f').value||0,
+    tw_f:+document.getElementById('f_tw_f').value||0,
+    yt_s:+document.getElementById('f_yt_s').value||0,
+    first:document.getElementById('f_first').value||'Athlete',
+  };
+  athleteData=p;
+  await new Promise(r=>setTimeout(r,1200));
+  valResult=calcNIL(p);
+  renderVal(valResult);
+  btn.disabled=false;
+  btn.textContent='Calculate My Value';
+  showPage('valuation');
+}
+
+// ─────────────────────────────────────────────
+// RENDER VALUATION
+// ─────────────────────────────────────────────
+function fmt(v){return v>=1000?`$${Math.round(v/1000)}K`:`$${v}`;}
+
+function renderVal(r){
+  document.getElementById('v-num').textContent=fmt(r.mid);
+  document.getElementById('v-range').textContent=`Range: ${fmt(r.floor)} – ${fmt(r.ceil)} / year`;
+  document.getElementById('v-summary').textContent=r.summary;
+  const tp=document.getElementById('v-tier');
+  tp.textContent=r.tier.charAt(0).toUpperCase()+r.tier.slice(1);
+  tp.className='tier-pill tier-'+r.tier;
+
+  // Benchmarks
+  const benchmarks=[
+    {label:'Typical first HS NIL deal (local business post)',range:'$50 – $300'},
+    {label:'Average HS athlete with 2K–10K social followers',range:'$200 – $800 / yr'},
+    {label:'Average HS athlete with 10K–50K followers',range:'$1,200 – $4,000 / yr'},
+    {label:'Average Power 4 college athlete (all sports)',range:'$3,180 / yr (median)'},
+    {label:'Average Power 4 football player',range:'$63,600 / yr'},
+    {label:'Top HS prospect (5-star football)',range:'$8,000 – $15,000 / yr'},
+  ];
+  const bHTML=benchmarks.map(b=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <span style="font-size:13px;color:rgba(255,255,255,.45);flex:1;padding-right:16px">${b.label}</span>
+      <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.7);white-space:nowrap">${b.range}</span>
+    </div>`).join('');
+  document.getElementById('benchmarks-section').innerHTML=bHTML;
+
+  // Scores
+  document.getElementById('score-rows').innerHTML=
+    [['Overall',r.scores.overall],['Social Media',r.scores.social],['Recruiting',r.scores.recruiting],['Sport',r.scores.sport],['Market',r.scores.market]]
+    .map(([l,v])=>`<div class="score-r"><div class="score-info"><span>${l}</span><span>${v}/100</span></div><div class="score-track"><div class="score-fill" style="width:${v}%"></div></div></div>`).join('');
+
+  // Deals
+  document.getElementById('deals-g').innerHTML=
+    Object.entries(r.deals).map(([l,d])=>
+      `<div class="deal-c"><div class="dl">${l}</div><div class="dv">${fmt(d.f)} – ${fmt(d.c)}</div><div class="ds">per deal</div></div>`
+    ).join('');
+
+  // Insights
+  const s=r.strengths.length?r.strengths:['Keep building your platform'];
+  const w=r.weaknesses.length?r.weaknesses:['Identify where to improve'];
+  const o=r.opps.length?r.opps:['Explore local brand deals'];
+  document.getElementById('insights-g').innerHTML=`
+    <div class="ins-c str"><div class="ins-label">Strengths</div>${s.map(x=>`<div class="ins-item"><span class="ins-icon" style="color:#30d158">✓</span>${x}</div>`).join('')}</div>
+    <div class="ins-c weak"><div class="ins-label">Improve</div>${w.map(x=>`<div class="ins-item"><span class="ins-icon" style="color:#ff453a">△</span>${x}</div>`).join('')}</div>
+    <div class="ins-c opp"><div class="ins-label">Opportunities</div>${o.map(x=>`<div class="ins-item"><span class="ins-icon" style="color:#ffd60a">→</span>${x}</div>`).join('')}</div>`;
+}
+
+// ─────────────────────────────────────────────
+// CHAT ENGINE — expanded & context-aware
+// ─────────────────────────────────────────────
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+// Helper: get athlete's first name from data
+function getName(){return(athleteData&&athleteData.first&&athleteData.first!=='Athlete')?athleteData.first:null;}
+function getSport(){return athleteData&&athleteData.sport?athleteData.sport:null;}
+function getCity(){return athleteData&&athleteData.city?athleteData.city:null;}
+
+// Returns sport-display name
+const sportNames={football:'football',basketball:'basketball',baseball:'baseball',softball:'softball',soccer:'soccer',volleyball:'volleyball',track:'track & field',swimming:'swimming',tennis:'tennis',golf:'golf',lacrosse:'lacrosse',wrestling:'wrestling',gymnastics:'gymnastics',hockey:'hockey',other:'sport'};
+function getSportName(){const s=getSport();return sportNames[s]||'sport';}
+
+const REPLIES={
+
+  greeting:[
+    ()=>{const n=getName();return n?`${n}. Good to have you here. What do you need?`:"Good to have you. What's on your mind — deals, content strategy, NIL rules?";},
+    ()=>"What's up. Ask me anything — first deal, social strategy, state rules, how to build your brand. I'm here.",
+    ()=>{const n=getName();return n?`${n} — let's get to work. What's your biggest question right now?`:"Let's get to work. What's your biggest question right now?";},
+  ],
+
+  whoami:[
+    ()=>"I'm ISAAC — your AI sports agent. I know your sport, your market, your numbers, and how NIL actually works for high school athletes. My job is to tell you the truth, not hype you up. What do you want to know?",
+    ()=>"Think of me as your agent, your brand strategist, and your NIL compliance guide all in one. I've seen what works and what wastes time. Ask me anything.",
+    ()=>"I'm built to help athletes understand their NIL value and actually do something with it. Calculator, strategy, outreach playbook — all of it. Where do you want to start?",
+  ],
+
+  firstDeal:[
+    ()=>{const city=getCity()||'your area';return `The playbook for your first deal:\n\n1. Pick 3 local businesses in ${city} — a gym, a restaurant, and an apparel or barber shop.\n2. Write a 3-sentence DM: your name, your sport, your follower count, and one sentence on what you're offering.\n3. Ask for product trade first, not cash. It lowers the barrier and gives you a portfolio piece.\n\nMost athletes overthink this. Just send the first message today.`;},
+    ()=>"The best first NIL deal for a high school athlete is almost always a product-for-post trade. You post 2–3 times wearing or using their product, they compensate in gear or $100–$300. That deal builds your portfolio for the next conversation with a bigger brand.",
+    ()=>{const sn=getSportName();return `For ${sn}, here's who to target first:\n\n— Local gym or training facility\n— Sports nutrition / supplement shop\n— Team photographer or videographer\n— Local restaurant or fast food franchise\n— Athletic apparel boutique\n\nAny of those near you? I can help you write the pitch.`;},
+    ()=>"Real talk: the difference between athletes who get deals and athletes who don't isn't follower count — it's who actually sends the message. Pick one business this week and reach out. The worst that happens is no response.",
+  ],
+
+  negotiate:[
+    ()=>`How to negotiate your first NIL rate:\n\nStep 1 — know your floor. Look at your follower count and engagement. Under 5K followers, your starting range for a single post is $50–$200.\n\nStep 2 — always counter. Whatever they offer first, come back at 20–30% higher with a reason: "I can add a story post and tag your location for that rate."\n\nStep 3 — package, don't one-off. Offer 3 posts instead of 1. Brands prefer consistency and you get paid more total.`,
+    ()=>"Never name your price first if you can avoid it. Ask what their budget is for the campaign. If they push you, give a range — never a fixed number — and anchor high on purpose.",
+    ()=>"Three ways to get paid more on the same deal:\n\n1. Add deliverables they didn't ask for (story + feed post instead of just a feed post).\n2. Offer exclusivity — 'I won't work with a competitor for 90 days' — and charge for it.\n3. Ask for a performance bonus — if the post hits a certain engagement, they pay a bonus. Brands that believe in the product will say yes.",
+    ()=>{const r=valResult;if(r){return`Your local business sponsorship range is ${fmt(r.deals['Local Business Sponsorship'].f)}–${fmt(r.deals['Local Business Sponsorship'].c)} per deal. Use that as your anchor when you're in the room. Don't go below the floor — if a brand won't meet your minimum, that's not your brand.`;}return"Know your number before you walk into any negotiation. Your floor is what you'll accept, your ask is what you lead with. Leave room to come down — never start at your floor.";}
+  ],
+
+  social:[
+    ()=>"TikTok is where I'd put 70% of your energy right now. Post training clips, game highlights, quick reactions, day-in-the-life content — anything that shows personality. First 90 days: consistency over quality. Five posts a week, minimum. Just start.",
+    ()=>"Instagram is your portfolio, TikTok is your growth engine. Use TikTok to build reach and funnel people to Instagram where your brand looks clean and curated. The two platforms serve different jobs.",
+    ()=>"The content formula that works for most HS athletes:\n\n— 3x / week: sport content (training, game clips, drills)\n— 1x / week: personality content (humor, routine, opinions)\n— 1x / week: community content (tagging local businesses, schools, teammates)\n\nThe third category is often overlooked — it's the one that gets you local brand attention.",
+    ()=>{const sn=getSportName();return `For ${sn} athletes, the highest-performing content types are:\n\n— Skill progression clips (before / after)\n— Behind-the-scenes practice content\n— Game highlights with clean transitions\n— Training tips or drills in under 30 seconds\n\nShort, punchy, and athletic. That's the formula.`;},
+    ()=>"Engagement rate is worth more to brands than raw follower count. A 10% rate with 3K followers beats a 0.8% rate with 50K. Create content that makes people actually react — ask questions, take positions, show real moments. Authenticity converts.",
+  ],
+
+  youtube:[
+    ()=>{const sn=getSportName();const n=getName()||'You';return `A YouTube highlights channel is one of the most underrated NIL moves for ${sn} athletes. ${n}, here's the play:\n\nUpload full game/meet highlights, condensed to 5–8 min. Title them "[Name] | [Year] | [School] Highlights." College coaches and brands both search this. It builds SEO equity over time and adds annual social value with minimal ongoing work.`;},
+    ()=>"YouTube is a long game but it compounds. Every video you post stays up and keeps getting views. For sports content, search discovery is strong — coaches, scouts, and brands actively look for athletes by name. Set it up, post consistently, and it works in the background.",
+    ()=>"If you're going to do YouTube, do it right: good audio on your clips, clean intro with your name and sport, and a consistent upload schedule. Even once a month beats sporadic posting. Use TikTok to drive traffic to your YouTube — repost the best 30-second clips.",
+  ],
+
+  outreach:[
+    ()=>`Here's an outreach DM template that actually works:\n\n"Hey [Brand name] — I'm [Name], a [sport] athlete at [School]. I have [X] followers on [platform] and [X]% of them are in [city]. I'd love to partner on [specific product]. Can I send you my media kit?"\n\nKeep it under 5 sentences. Don't attach anything first — ask permission. That one sentence at the end gets way more responses than just sending a PDF cold.`,
+    ()=>"Email versus DM: DM first, every time. Most brand managers check Instagram before email. If you don't get a response in a week, follow up once. Two follow-ups max. After that, move on — there are hundreds of businesses in your market.",
+    ()=>{const city=getCity()||'your city';return `For ${city} brands, your subject line for a cold email should be:\n\n"[Your sport] athlete in [city] — partnership inquiry"\n\nThat's it. Simple, local, specific. In the body: 3 sentences max. Who you are, your numbers, what you want. Attach your media kit. Done.`;},
+    ()=>"The biggest mistake in outreach: making it about yourself instead of them. Open with what's in it for the brand — their audience, local reach, community visibility. Then introduce yourself. Brands get hundreds of these; the ones that lead with value stand out.",
+  ],
+
+  mediakit:[
+    ()=>`Your media kit is your NIL resume. One page, clean design, real numbers. Here's what it needs:\n\n— Headshot (professional or high quality)\n— Sport, school, position, graduation year\n— Social handles + current follower counts\n— Engagement rate on your top platform\n— Your top 3 athletic achievements\n— A link to highlight footage\n— Contact info (email only — no personal phone)\n\nUpdate it every quarter. Brands ask for it before they talk money.`,
+    ()=>"Think of your media kit as a pitch deck, not a bio page. The goal isn't to describe yourself — it's to make the brand see the value in one glance. Every number you put on it should answer: 'why should they pay me?'",
+    ()=>"Media kit format: I'd recommend a simple Canva template. Clean, black and white or your school colors, one page. Canva has free athlete templates. Don't overthink the design — clarity beats creativity here. The numbers are what matter.",
+  ],
+
+  nilRules:[
+    ()=>`NIL rules for high school athletes vary a lot by state. Here's the general framework:\n\n✓ Most permissive states (CA, TX, FL, GA, NY, etc.) — you can sign deals, just notify your school\n✓ You cannot use your school's logo, mascot, or uniform in any deal\n✓ You cannot be paid to endorse a brand in a way that suggests school endorsement\n✓ The deal has to be for your NIL — not for athletic performance\n\nAlways run it by your athletic director before signing. One bad deal isn't worth risking your eligibility.`,
+    ()=>"State athletic associations run HS NIL in most states — not the NCAA. California is CIF, Texas is UIL, Florida is FHSAA, Ohio is OHSAA, and so on. Each has its own rules and disclosure forms. Look up your state's association website and search 'NIL policy.' It's usually 2–3 pages.",
+    ()=>{const state=athleteData&&athleteData.state?athleteData.state:'your state';return `In ${state}, HS NIL is governed by your state athletic association. The standard rules: you can sign deals but must disclose to your school, can't use school branding, and the compensation can't be tied to your athletic performance or inducement to attend a school.\n\nBefore signing anything, tell your AD. Even a $50 deal can cause issues if it's not done right.`;},
+    ()=>"The two things that get HS athletes in trouble with NIL:\n\n1. Using their school's name, logo, or uniform without approval\n2. Accepting compensation that looks like a recruiting inducement (a booster from a college paying you while they're recruiting you)\n\nEverything else is generally fine as long as you disclose it. When in doubt, ask your AD first — not after.",
+  ],
+
+  contract:[
+    ()=>`Before you sign anything, look for these three things:\n\n1. Exclusivity clause — does it block you from working with competitors? For how long?\n2. Usage rights — can they use your image on their website, in ads, on signage?\n3. Deliverable list — exactly what posts are required, on which platform, by when?\n\nIf it's under $500, these things matter less. If it's over $500 or involves exclusivity, get a parent or advisor to read it first.`,
+    ()=>"A good NIL contract is short and specific. Red flags: vague deliverables, unlimited image usage, long exclusivity windows with no compensation bump, auto-renewal clauses. Green flags: clear post schedule, defined usage rights, payment terms up front (or 50% up front / 50% on delivery).",
+    ()=>"For your first few deals, you don't need a lawyer. For anything over $1,000 or multi-month, it's worth paying $100–$200 for a quick legal review. NILPA (NIL Players Association) also has free resources for HS athletes. It's worth a look.",
+  ],
+
+  recruiting:[
+    ()=>{const sn=getSportName();return `Here's how NIL and recruiting work together for ${sn}:\n\nNIL activity can help recruiting — it shows programs you're already building a brand, which matters especially at mid-major and D2 levels. But it can also attract scrutiny. No college booster can pay you for NIL while they're actively recruiting you — that's a violation.\n\nBuild your brand now. Let it speak for itself in recruiting conversations.`;},
+    ()=>"Your NIL value and your recruiting value are connected but separate. A 5-star recruit commands more NIL attention. But athletes with 0 recruiting rank and 50K followers can still do meaningful NIL deals — social reach is its own currency.\n\nFocus on your sport first, your brand second. The best NIL athletes are the best athletes who happen to have a brand.",
+    ()=>"One thing coaches care about: athletes who handle NIL professionally during the recruiting process. If you're posting deals, make sure they look clean and represent you well. Your Instagram is part of your recruiting profile whether you want it to be or not.",
+  ],
+
+  valuation:[
+    ()=>{if(valResult){const r=valResult;const driver=r.scores.social>r.scores.recruiting?"social media reach \u2014 that\u2019s actually a good sign, it means you control your upside":"recruiting status, which is great but harder to change quickly";const lever=r.scores.social<40?"growing one social platform consistently":"converting your current audience into actual brand relationships";return`Your ${r.tier} tier means your NIL value is built on ${driver}. The fastest lever from here is ${lever}.`;}return"Your NIL value is based on four things: sport, recruiting status, social media reach, and market size. You control two of those directly. Social and market presence are where most athletes have the most room to grow.";},
+    ()=>{if(valResult){const r=valResult;return`Your overall score is ${r.scores.overall}/100. The breakdown:\n\n— Social: ${r.scores.social}/100\n— Recruiting: ${r.scores.recruiting}/100\n— Sport value: ${r.scores.sport}/100\n— Market: ${r.scores.market}/100\n\nSocial is the most movable. A 20-point jump there can meaningfully change your annual value.`;}return"If you haven't run your valuation yet, do that first — I can give you a much more specific read on your numbers once I have them.";},
+    ()=>{if(valResult){const r=valResult;return`At ${fmt(r.mid)} annually, here's how to actually get there:\n\n— ${fmt(r.deals['Local Business Sponsorship'].f)}–${fmt(r.deals['Local Business Sponsorship'].c)} from 1–2 local business sponsors\n— ${fmt(r.deals['Sponsored Social Post'].f)}–${fmt(r.deals['Sponsored Social Post'].c)} from 3–4 sponsored posts\n— The rest from apparel trades and camp appearances\n\nYou don't land all of this in month one. It builds over a full year.`;}return"NIL is a year-long game, not a one-deal score. Stack small deals, build your portfolio, and revisit your numbers every 6 months.";},
+  ],
+
+  apparel:[
+    ()=>{const sn=getSportName();return `Apparel deals are great for ${sn} athletes because the product is visible and shareable. Here's how to approach them:\n\n1. Target local athletic apparel boutiques first — they have smaller margins but love community visibility\n2. Pitch it as a trade-first deal: 3 posts in exchange for gear\n3. Once you have a track record, go to regional brands and then national ones\n\nNational apparel brands (Nike, Under Armour, etc.) typically only work with athletes at the recruiting level. Don't waste energy there yet.`;},
+    ()=>"For gear deals, always negotiate for usage rights. If they want to put your image on their website or in a store, that's additional value — charge for it. A post deal and a usage deal are two different things.",
+  ],
+
+  camp:[
+    ()=>{const sn=getSportName();return `Camp and clinic appearances are one of the highest-value NIL categories for ${sn} athletes, especially if you're in a smaller market. Here's why:\n\nYou get paid (typically $50–$500 per appearance for HS athletes), you build community presence, and it's the kind of NIL deal parents and local media love to cover.\n\nTarget summer camps run by local coaches, gyms, or recreation departments. Pitch it as a "guest instructor" deal — you run a drill session for 45 minutes and get paid for your time.`;},
+    ()=>"Camp appearances are underrated for building your NIL brand. Every kid at that camp goes home and talks about you. That's organic reach that no paid post can replicate. Do 2–3 of these and your local profile goes up significantly.",
+  ],
+
+  tax:[
+    ()=>"Yes, NIL income is taxable. It's self-employment income — you'll get 1099s from brands who pay you $600 or more in a year. Keep receipts for anything you spend on content creation (camera, editing apps, etc.) because it's deductible.\n\nTell your parents now so it's not a surprise at tax time. It's not complicated — just new.",
+    ()=>"Tax tip: set aside 25–30% of every NIL payment for taxes. Sounds high, but better to have it and not need it than owe the IRS in April. And track every expense related to content creation — all of it is deductible.",
+  ],
+
+  confidence:[
+    ()=>{const n=getName();const sn=getSportName();return `${n?n+', you':'You'} don't need to be famous to start. ${sn==='football'||sn==='basketball'?'The biggest football and basketball deals go to 5-stars, but':'In '+sn+','} the athletes making the most NIL money relative to their size are the ones who started early and built consistently. That's available to you right now.`;},
+    ()=>"The athletes who do best with NIL aren't always the most talented. They're the most consistent — with content, with outreach, with showing up. Talent gets you noticed, consistency builds the business.",
+    ()=>"Here's the real talk: most HS athletes overthink this and do nothing. You're already ahead by asking the question. Start small, learn what works for you, and build from there. Nobody's first deal is their best deal.",
+  ],
+
+  benchmark:[
+    ()=>`Real NIL benchmarks for context:\n\n— First HS deal (local): typically $50–$300\n— HS athlete with 2K–10K followers: $200–$800 / year total\n— HS athlete with 10K–50K followers: $1,200–$4,000 / year\n— Average Power 4 college athlete: ~$3,200 / year (median)\n— Power 4 football: ~$63,600 / year average\n— Elite HS prospects (#1 national): $500K–$1.5M+\n\nMost HS athletes are in the $200–$2,000 range. That's real money. It just takes showing up.`,
+    ()=>"For reference: the median NIL deal across all Power 4 college athletes is about $500. A HS athlete with a solid local presence can realistically hit that on a single local sponsorship. The ceiling just keeps going up from there.",
+  ],
+
+  default:[
+    ()=>{if(valResult){const r=valResult;const n=getName();return`${n?n+', based':'Based'} on your numbers — ${r.tier} tier, ${r.scores.overall}/100 overall score — your strongest lever is ${r.scores.social>r.scores.recruiting?'growing your social audience':'leveraging your recruiting status in brand conversations'}. What specific part of your NIL strategy do you want to work on?`;}return"I can help with first deals, social strategy, state NIL rules, media kits, outreach templates, contract basics, and how to read your valuation. What's on your mind?";},
+    ()=>"Your NIL value is built on three things: your sport, your social presence, and your market. You control two of those directly. Where do you want to focus?",
+    ()=>{const sn=getSportName();if(sn&&sn!=='sport'){return`For ${sn} athletes, the biggest NIL opportunities are local business sponsorships, social media partnerships, and camp appearances. Which of those do you want to dig into?`;}return"Most athletes who come to me have the same question underneath everything: 'Am I worth anything?' The answer is yes — the question is how to go get it. What's your biggest blocker right now?";},
+    ()=>"Real talk: most HS athletes leave NIL money on the table not because they're not valuable, but because they never start. The first outreach message, the first deal, the first post — that's all it takes to begin. What's stopping you?",
+  ]
+};
+
+// Intent classifier — ordered by priority
+function classifyIntent(t){
+  if(/\b(hi|hey|hello|what'?s up|sup|yo|hola)\b/.test(t)&&t.length<25)return'greeting';
+  if(/who are you|what (can|do) you|what'?s isaac|tell me about yourself|how (do you|can you) help/.test(t))return'whoami';
+  if(/first deal|how (do i|to) (get|land|find|approach|start).*deal|where (do i|to) start|how (do i|to) make money/.test(t))return'firstDeal';
+  if(/negotiat|counter|rate|how much (should i|to) charge|what (should i|to) ask for|price/.test(t))return'negotiate';
+  if(/outreach|how (do i|to) (dm|reach out|contact|email|approach).*brand|how (do i|to) pitch|pitch template|dm template|email template/.test(t))return'outreach';
+  if(/media kit|one.pager|portfolio|resume|pitch deck/.test(t))return'mediakit';
+  if(/contract|sign|agreement|terms|legal|clause/.test(t))return'contract';
+  if(/tax|irs|1099|income|financial/.test(t))return'tax';
+  if(/recruit|college|scholarship|d1|d2|d3|commit|signing day/.test(t))return'recruiting';
+  if(/youtube|highlights|video|channel/.test(t))return'youtube';
+  if(/tiktok|instagram|twitter|social|followers|engagement|content|post|grow|audience/.test(t))return'social';
+  if(/apparel|gear|shoes|clothing|jersey|uniform/.test(t))return'apparel';
+  if(/camp|clinic|appearance|event|speaking/.test(t))return'camp';
+  if(/nil rule|state rule|eligible|compliance|uil|cif|fhsaa|legal|allowed|permitted|violation/.test(t))return'nilRules';
+  if(/how much (am i|is my|is it) worth|my value|my valuation|my score|my number|what'?s my/.test(t))return'valuation';
+  if(/benchmark|average|typical|compare|how much do (others|athletes|players)/.test(t))return'benchmark';
+  if(/scared|nervous|worried|not sure|doubt|should i|don'?t know|is it worth|overwhelm/.test(t))return'confidence';
+  if(/deal|sponsor|brand|partnership|money|paid|payment|income|earn/.test(t))return'deal';
+  return null;
+}
+
+function getIsaacReply(txt){
+  const t=txt.toLowerCase().trim();
+  const intent=classifyIntent(t);
+  if(intent&&REPLIES[intent])return pick(REPLIES[intent])();
+  // Fallback: sport-specific context if available
+  if(valResult||athleteData.sport)return pick(REPLIES.default)();
+  return pick(REPLIES.default)();
+}
+
+function addMsg(role,content){
+  const list=document.getElementById('msg-list');
+  const d=document.createElement('div');
+  d.className=`msg ${role}`;
+  if(role==='assistant'){
+    d.innerHTML=`<div class="isaac-mark" style="width:30px;height:30px;font-size:11px;border-radius:8px;flex-shrink:0;margin-top:2px">∞</div>
+      <div class="bubble-wrap"><div class="msg-sender">ISAAC</div><div class="msg-bub">${content.replace(/\n/g,'<br>')}</div></div>`;
+  }else{
+    d.innerHTML=`<div class="bubble-wrap"><div class="msg-bub">${content}</div></div>`;
+  }
+  list.appendChild(d);
+  msgs.push({role,content});
+  scrollBot();
+}
+
+function showGate(){
+  if(gateShown)return;
+  gateShown=true;
+  const list=document.getElementById('msg-list');
+  const d=document.createElement('div');
+  d.className='msg-gate';
+  d.innerHTML=`<h4>You've used your 5 free messages</h4>
+    <p>Create a free account to keep chatting with ISAAC — unlimited messages, saved valuations, and deal tracking.</p>
+    <button class="gate-btn" onclick="dismissGate(this.parentElement)">Create Free Account</button>
+    <button class="gate-btn-sec" onclick="dismissGate(this.parentElement)">Maybe Later</button>`;
+  list.appendChild(d);
+  document.getElementById('send-btn').disabled=true;
+  document.getElementById('chat-ta').disabled=true;
+  scrollBot();
+}
+
+function dismissGate(el){
+  el.innerHTML='<p style="color:rgba(255,255,255,.3);font-size:13px;padding:8px 0">You can continue — this is a demo. In the live app, you\'d sign up here.</p>';
+  freeMessages=5;
+  gateShown=false;
+  document.getElementById('send-btn').disabled=false;
+  document.getElementById('chat-ta').disabled=false;
+}
+
+function scrollBot(){
+  const m=document.getElementById('messages');
+  setTimeout(()=>m.scrollTop=m.scrollHeight,50);
+}
+
+async function sendMsg(){
+  if(chatLoading)return;
+  const ta=document.getElementById('chat-ta');
+  const txt=ta.value.trim();
+  if(!txt)return;
+  ta.value='';ta.style.height='auto';
+  document.getElementById('starters-section').style.display='none';
+  addMsg('user',txt);
+  freeMessages--;
+  chatLoading=true;
+  document.getElementById('typing-row').style.display='block';
+  scrollBot();
+  await new Promise(r=>setTimeout(r,700+Math.random()*900));
+  document.getElementById('typing-row').style.display='none';
+  addMsg('assistant',getIsaacReply(txt));
+  chatLoading=false;
+  if(freeMessages<=0)setTimeout(showGate,400);
+}
+
+function sendStarter(btn){
+  document.getElementById('starters-section').style.display='none';
+  const t=btn.textContent;
+  addMsg('user',t);
+  freeMessages--;
+  chatLoading=true;
+  document.getElementById('typing-row').style.display='block';
+  scrollBot();
+  setTimeout(()=>{
+    document.getElementById('typing-row').style.display='none';
+    addMsg('assistant',getIsaacReply(t));
+    chatLoading=false;
+    if(freeMessages<=0)setTimeout(showGate,400);
+  },800+Math.random()*700);
+}
+
+// Init — non-landing pages hidden via inline style in HTML
+</script>
+</body>
+</html>
