@@ -1,4 +1,4 @@
-# ISAAC — Inphinity Sports Automated Advisory Companion
+# ISAAC — Inphinity Sports Athletics Advisory Companion
 
 AI-powered NIL value calculator and sports agent for athletes. Built with Next.js 14, Supabase, and Claude AI.
 
